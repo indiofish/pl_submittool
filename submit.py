@@ -45,7 +45,7 @@ def submit(ass):
                 return
         f = {'submitted_file': submission}
         ret = s.post(upload_url, files=f, data=payload)
-        f.close()
+        submission.close()
 
         # get current submission number
         se = re.search("(/submission/)(\d+)", ret.text)
