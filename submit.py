@@ -36,12 +36,16 @@ def submit(ass):
         payload['csrfmiddlewaretoken'] = csrftoken
         path = '{:02d}/submission.zip'.format(ass)
         try:
-            with open(path, 'rb') as submission:
-                f = {'submitted_file': submission}
-                ret = s.post(upload_url, files=f, data=payload)
+            submission = open(path, 'rb')
         except IOError:
-            print "try make submission first"
-            return
+            try:
+                submission = open('submission.zip', 'rb')
+            except:
+                print "try make submission first"
+                return
+        f = {'submitted_file': submission}
+        ret = s.post(upload_url, files=f, data=payload)
+        f.close()
 
         # get current submission number
         se = re.search("(/submission/)(\d+)", ret.text)
